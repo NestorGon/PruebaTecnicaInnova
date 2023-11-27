@@ -117,7 +117,7 @@ function renderCharacters() {
     });
     table += '</tbody></table></div>';
     table += `
-        <div class="row">
+        <div class="row mb-3">
             <div class="col text-center">
                 <div class="btn-group" role="group" aria-label="Pagination buttons">
                     <button type="button" class="btn" id="page-button" onclick=fetchCharacters(false) ${previousPage ? '' : 'disabled'}>
