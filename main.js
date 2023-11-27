@@ -83,16 +83,17 @@ function fetchCharacters(forwardPage = false) {
 
 function renderCharacters() {
     let table = `
-    <table class="table table-striped text-center align-middle">
-        <thead>
-            <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Species</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="table-responsive">
+        <table class="table table-striped text-center align-middle">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Species</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
     `;
     characters.forEach(character => {
         table += `
@@ -114,7 +115,7 @@ function renderCharacters() {
         </tr>
         `;
     });
-    table += '</tbody></table>';
+    table += '</tbody></table></div>';
     table += `
         <div class="row">
             <div class="col text-center">
@@ -133,6 +134,7 @@ function renderCharacters() {
 }
 
 async function fetchCharacterDetails(id) {
+    renderLoadingSpinner('Loading character details...');
     let character = characters.find(character => character.id === id);
     if (!character.episodes) {
         await fetchEpisodes(character.episodeUrls)
