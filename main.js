@@ -6,7 +6,7 @@ let characters = [];
 
 // Classes for characters and episodes parsing
 class Character {
-    constructor(id, name, image, species, status, type, gender, origin, location, episodeUrls, episodes) {
+    constructor(id, name, image, species, status, type, gender, origin, locationUrl, location, episodeUrls, episodes) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -15,6 +15,7 @@ class Character {
         this.type = type;
         this.gender = gender;
         this.origin = origin;
+        this.locationUrl = locationUrl;
         this.location = location;
         this.episodeUrls = episodeUrls;
         this.episodes = episodes;
@@ -40,7 +41,8 @@ class Character {
             json.type,
             json.gender,
             json.origin.name,
-            json.location.name,
+            json.location.url,
+            null,
             json.episode,
             null
         );
@@ -57,6 +59,19 @@ class Episode {
 
     static fromJSON(json) {
         return new Episode(json.id, json.name, json.air_date, json.episode);
+    }
+}
+
+class Location {
+    constructor(id, name, type, dimension) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.dimension = dimension;
+    }
+
+    static fromJSON(json) {
+        return new Location(json.id, json.name, json.type, json.dimension);
     }
 }
 
@@ -144,6 +159,14 @@ async function fetchCharacterDetails(id) {
                 console.log(error);
             });
     }
+    if (!character.location) {
+        await fetchLocation(character.locationUrl)
+            .then(location => character.location = location)
+            .catch(error => {
+                showError();
+                console.log(error);
+            });
+    }
     renderCharacterDetail(character);
 }
 
@@ -159,6 +182,16 @@ async function fetchEpisodes(episodeUrls) {
             });
     }
     return episodes;
+}
+
+async function fetchLocation(locationUrl) {
+    return await fetch(locationUrl)
+        .then(response => response.json())
+        .then(data => Location.fromJSON(data))
+        .catch(error => {
+            showError();
+            console.log(error);
+        });
 }
 
 function renderCharacterDetail(character) {
@@ -204,9 +237,16 @@ function renderCharacterDetail(character) {
                         <div class="col-12 col-sm-6 col-md-12">
                             <p><b>Origin:</b> ${character.origin}</p>
                         </div>
-                        <div class="col-12 col-sm-6 col-md-12">
-                            <p><b>Location:</b> ${character.location}</p>
-                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center text-center">
+                <h2 class="text-center m-3">Location</h2>
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">${character.location.name}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted"><b>Type:</b> ${character.location.type}</h6>
+                        <p class="card-text"><b>Dimension:</b> ${character.location.dimension}</p>
                     </div>
                 </div>
             </div>
