@@ -1,0 +1,46 @@
+.btn-circle {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    line-height: 40px;
+
+    outline: rgb(100,175,200) 2px solid;
+    color: rgb(100,175,200);
+
+    &:hover {
+        background-color: rgb(100,175,200);
+        color: white;
+    }
+}
+
+#page-button {
+    background-color: rgba(100,175,200,0.5);
+    color: white;
+
+    &:hover {
+        background-color: rgb(100,175,200);
+        color: white;
+    }
+
+    &:active {
+        background-color: white;
+        outline: rgb(100,175,200) 2px solid;
+        color: rgb(100,175,200);
+    }
+
+    &:disabled {
+        background-color: gray;
+        color: white;
+    }
+}
+
+.character-image {
+    max-height: 200px;
+}
+
+.custom-link {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
